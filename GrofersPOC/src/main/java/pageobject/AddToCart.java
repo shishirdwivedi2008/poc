@@ -46,12 +46,12 @@ public class AddToCart {
 		}
 		
 		for(int i=0;i<productName.length;i++){
-			if(item_name.contains(productName[i])){
+			if(name.contains(productName[i])){
 				config.log("Item matched in cart ");
 				config.softAssert.assertTrue(true, "Iteam matched in cart");
 			}else{
 				config.log("Item not matched in cart");
-				config.softAssert.assertTrue(falase, "Item not matched");
+				config.softAssert.assertTrue(false, "Item not matched");
 			}
 		}
 	}

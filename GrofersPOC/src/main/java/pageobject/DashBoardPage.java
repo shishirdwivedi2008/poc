@@ -24,10 +24,9 @@ public class DashBoardPage {
 	private WebElement btnSearch;
 	@FindBy(xpath="//img[contains(@alt,'Tata Agni Tea')]")
 	private WebElement product;
-	@FindBy(xpath="//button[@data-test-id='add-button']")
+	@FindBy(xpath="(//h1[@title='Tata Agni Tea (Pouch)']//following::button[@data-test-id='add-button'])[1]")
 	private WebElement addToCart;
-	@FindBy(xpath="//div[@class='pdp']")
-	private WebElement cartDiv;
+	
 	List<String>src=new ArrayList<String>();
 	public DashBoardPage(Config config) {
 		this.config = config;
@@ -44,9 +43,18 @@ public class DashBoardPage {
 	public DashBoardPage enterProductToSeaerch(String product) {
 		searchBox.sendKeys(product);
 		config.log("Searching for Product:" + product);
-		btnSearch.click();
+		config.driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
+		searchBox.sendKeys(Keys.ENTER);
+		//btnSearch.click();
 		config.log("Waiting for 20 Seconds");
-		config.driver.manage().timeouts().implicitlyWait(20,TimeUnit.SECONDS);
+		
+		//Deliberately waiting to 20 second hence not using implcit wait.
+		try {
+			Thread.sleep(20000);
+		} catch (InterruptedException e) {
+			
+			e.printStackTrace();
+		}
 		return new DashBoardPage(config);
 	}
 	
@@ -108,7 +116,13 @@ public class DashBoardPage {
 	 */
 	public DashBoardPage selectOneProduct(){
 		product.click();
-		config.driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
+		try {
+			config.log("Sleeping for 10 second to load data ");
+			Thread.sleep(10000);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		return new DashBoardPage(config);
 	}
 	
@@ -117,10 +131,11 @@ public class DashBoardPage {
 	 * @return
 	 */
 	public AddToCart addToCart(){
+		config.driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
 		addToCart.click();
 		config.driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
 		config.log("pressing ESC to close cart div");
-		cartDiv.sendKeys(Keys.ESCAPE);
+		config.driver.findElement(By.xpath("//div[@class='pdp']")).sendKeys(Keys.ESCAPE);
 		return new AddToCart(config);
 	}
 }
