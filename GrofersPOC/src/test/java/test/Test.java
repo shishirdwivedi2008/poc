@@ -16,5 +16,6 @@ public class Test extends TestBase {
 		dashboard.verifyImageIsNotBroken();
 		AddToCart cart = dashboard.selectOneProduct().addToCart().clickToOpenCart();
 		cart.verifyProduct(product);
+		config.softAssert.assertAll();
 	}
 }
